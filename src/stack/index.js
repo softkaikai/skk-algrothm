@@ -27,6 +27,14 @@ class Stack {
     length() {
         return this.top;
     }
+    toString() {
+        let result = ''
+        this.dataStore.forEach(i => {
+            result += i;
+        })
+
+        return result;
+    }
 }
 
 module.exports = Stack;

@@ -74,9 +74,97 @@ function isPair(str) {
     return !s.length();
 }
 
+function calc(expression) {
+    const s = new Stack();
+    expression = expression.replace(/\s/g, '');
+    const items = expression.split(/(\+|\*|\-|\%|\/|\(|\))/)
+
+    const highPriorityOperators = ['*', '/', '%'];
+    const lowPriorityOperators = ['+', '-']
+
+    if (expression.includes('(')) {
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i]
+            if (item === ')') {
+                let newExpression = item;
+                let newItem = '';
+
+                do {
+                    newItem = s.pop();
+                    newExpression = newItem + newExpression;
+                } while(newItem !== '(')
+
+                newExpression = newExpression.replace(/\(|\)/g, '')
+                s.push(calc(newExpression) + '')
+            } else {
+                s.push(item)
+            }
+        }
+        
+        return calc(s.toString())
+    } else if (highPriorityOperators.some(operator => expression.includes(operator))) { // 到这里的表达式不包含括号，只用考虑操作符优先级
+        for(let i = 0; i < items.length;) {
+            const item = items[i]
+
+            if (highPriorityOperators.includes(item)) {
+                const firstNum = Number(s.pop());
+                const secondNum = Number(items[i + 1])
+                switch(item) {
+                    case '*':
+                        s.push(firstNum * secondNum + '')
+                        break;
+                    case '/':
+                        s.push(firstNum / secondNum + '')
+                        break;
+                    case '%':
+                        s.push(firstNum % secondNum + '')
+                        break;
+                    default:
+                        break;
+                }
+
+                i += 2;
+            } else {
+                s.push(item)
+                i++;
+            }
+        }
+
+        return calc(s.toString())
+
+    } else { // 到这里的表达式只包含+, -了
+        let result = 0;
+        items.forEach((item, index) => {
+            if (!lowPriorityOperators.includes(item)) {
+                if (index === 0) {
+                    result += Number(item);
+                } else {
+                    const operator = items[index - 1];
+                    switch(operator) {
+                        case '+':
+                            result += Number(item);
+                            break;
+                        case '-':
+                            result -= Number(item);
+                            break;
+                        default:
+                            result += Number(item);
+                            break;
+                    }
+                }
+            }
+        })
+
+        return result;
+    }
+
+    
+}
+
 
 
 console.log('mulBase', mulBase(100, 16));
 console.log('43 isPalindrome', isPalindrome('123211'));
 console.log('add', add(5));
 console.log('80 isPair', isPair('ad(sdf)['));
+console.log('calc', calc('1 - (2 * 3 - (3 - 1) )/ 4 + 2 % 3'));
