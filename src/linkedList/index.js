@@ -136,8 +136,85 @@ class LoopList {
     }
 }
 
+function ListNode(element) {
+    return {
+        next: null,
+        element
+    }
+}
+
+class List {
+    constructor() {
+        this.head = null;
+        this.tail = null;
+    }
+    find(element) {
+        let next = this.head;
+        while(next && next.element !== element) {
+            next = next.next;
+        }
+
+        return next;
+    }
+    insert(element, afterElementInsert) {
+        const newNode = ListNode(element)
+        afterElementInsert = afterElementInsert;
+        const afterNodeInsert = this.find(afterElementInsert);
+        if (!afterNodeInsert) {
+            if (!this.tail) {
+                this.tail = this.head = newNode;
+            } else {
+                this.tail.next = newNode;
+                this.tail = newNode;
+            }
+        } else {
+            newNode.next = afterNodeInsert.next;
+            afterNodeInsert.next = newNode;
+        }
+        
+        
+    }
+    remove(element) {
+        let pre = this.head;
+        let next = this.head.next;
+        while(next) {
+            if (next.element === element) {
+                pre.next = next.next;
+                return;
+            }
+            pre = next;
+            next = next.next;
+        }
+    }
+    getElements() {
+        const result = []
+        let next = this.head;
+        while(next) {
+            result.push(next.element)
+            next = next.next;
+        }
+
+        return result.slice();
+    }
+    getNode(n) {
+        let next = null;
+        let i = 0;
+        while(i < n) {
+            if (next) {
+                next = next.next;
+            } else {
+                next = this.head;
+            }
+            i++;
+        }
+
+        return next;
+    }
+}
+
 
 module.exports = {
     LoopList,
-    LList
+    LList,
+    List
 }
