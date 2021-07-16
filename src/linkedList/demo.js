@@ -13,6 +13,8 @@ l.insert(1)
 l.insert(2)
 l.insert(3)
 l.insert(4)
+l.insert(5)
+l.insert(6)
 
 loopL.insert(1)
 loopL.insert(2, 1)
@@ -47,9 +49,9 @@ function rotateRight(k) {
 
 console.log('rotateRight', rotateRight(2));
 
-function reverseList(list) {
+function reverseList(list, head) {
     let nodes = []
-    let next = list.head;
+    let next = head || list.head;
     while(next) {
         nodes.push(next);
         next = next.next;
@@ -71,4 +73,41 @@ function reverseList(list) {
     return list;
 }
 
-console.log('reverseList', reverseList(l).getElements());
+function reverseKGroup(list, k) {
+    const needReverseLists = [];
+    let needReverseNodes = [];
+
+    let next = list.head;
+    let count = 0;
+    while(next) {
+        needReverseNodes.push(next);
+        next = next.next;
+        count++;
+        if (count >= k) {
+            count = 0;
+            needReverseLists.push(needReverseNodes.reverse());
+            needReverseNodes = [];
+        }
+    }
+
+    needReverseLists.push(needReverseNodes)
+
+    const allNodes = needReverseLists.reduce((pre, curr) => {
+        return pre.concat(curr)
+    }, [])
+
+    return getList(allNodes);
+
+    function getList(nodes) {
+        const l = new List();
+        nodes.forEach(i => {
+            l.insert(i.element);
+        })
+
+        return l;
+    }
+
+}
+
+// console.log('reverseList', reverseList(l).getElements());
+console.log('reverseKGroup', reverseKGroup(l, 4).getElements());
