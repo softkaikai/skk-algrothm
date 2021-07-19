@@ -127,6 +127,13 @@ class BST {
             }
         }
     }
+    getNodeNum(node) {
+        if (!node) {
+            return 0;
+        }
+
+        return this.getNodeNum(node.left) + this.getNodeNum(node.right) + 1;
+    }
 }
 
 

@@ -12,5 +12,6 @@ console.log('post', bst.postOrder(bst.root));
 console.log('min', bst.getMin());
 console.log('max', bst.getMax());
 console.log('find', bst.find(16));
-console.log('remove', bst.remove(16));
-console.log('pre', bst.root);
+console.log('getNodeNum', bst.getNodeNum(bst.root));
+// console.log('remove', bst.remove(16));
+// console.log('pre', bst.root);
