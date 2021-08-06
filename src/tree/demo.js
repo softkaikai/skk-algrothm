@@ -1,4 +1,21 @@
-const {BST} = require('./index')
+const {BST} = require('./index');
+const { RedBlackTree } = require('./rbTree');
+const cp = require('console-probe')
+
+const rbt = new RedBlackTree();
+
+rbt.insert(10)
+rbt.insert(5)
+rbt.insert(20)
+rbt.insert(3)
+rbt.insert(14)
+rbt.insert(16)
+rbt.insert(8)
+rbt.insert(30)
+
+cp.json(rbt)
+// console.log('rbt', rbt);
+return
 
 const bst = new BST();
 
