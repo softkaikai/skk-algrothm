@@ -47,6 +47,21 @@ class RedBlackTree {
             return parent.left;
         }
     }
+    find(value) {
+        let current = this.root;
+        while(current !== null) {
+            if (current.value === value) {
+                return current;
+            } else if (value < current.value) {
+                current = current.left;
+            } else {
+                current = current.right;
+            }
+        }
+
+        return null;
+    }
+
     insert(value) {
         const newNode = new RedBlackNode(value)
         // 默认新增添加的结点为红色结点
@@ -211,6 +226,47 @@ class RedBlackTree {
         parent.left = right;
         if (right !== null) {
             right.parent = parent;
+        }
+    }
+
+    // 查询后继结点
+    // 情况1：如果存在右结点，找到右结点最左侧分支上的后辈结点
+    // 情况2：不存在右节点，向上找作为后继结点的父辈结点，直到自己所在分支是父结点的左分支
+    successor(node) {
+        if (node === null) {
+            return node;
+        }
+
+        if (node.right !== null) {
+            p = node.right;
+            while(p.left !== null) {
+                p = p.left;
+            }
+
+            return p;
+        } else {
+            let current = node;
+            let parent = node.parent;
+
+            while(parent !== null && parent.right === current) {
+                current = parent;
+                parent = current.parent;
+            }
+
+            parent;
+        }
+    }
+
+    deleteNode(value) {
+        const node = this.find(value);
+        // 如果待删除的结点是红色，并且没有子节点，直接删除
+        if (this.isRed(node) && node.left === null && node.right === null) {
+            if (this.getDirection(node, node.parent) === 'left') {
+                node.parent.left = null;
+            } else {
+                node.parent.right = null;
+            }
+            return node;
         }
     }
 }
